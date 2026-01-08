@@ -28,10 +28,10 @@
   ],
   "education": [
     {
-      "degree": "Bachelor of Computer Applications",
-      "school": "University Name",
+      "degree": "Bachelor's degree",
+      "school": "Atmiya University",
       "year": "Expected 2026",
-      "details": "Pursuing comprehensive degree in computer applications"
+      "details": "I am pursuing a Bachelor's degree at Atmiya University."
     }
   ],
   "projects": [
@@ -46,9 +46,9 @@
       "technologies": ["PHP", "MySQL", "JavaScript"]
     },
     {
-      "name": "Python Dashboards & Automation",
-      "description": "Data visualization and automation scripts",
-      "technologies": ["Python", "Pandas", "Data Visualization"]
+      "name": "TheDigitalDreamCode",
+      "description": "TheDigitalDreamCode is a web-based application developed using HTML, CSS, JavaScript, PHP, and MySQL. It focuses on responsive design, backend functionality, and efficient database operations, demonstrating practical web development skills.",
+      "technologies": ["HTML", "CSS", "JavaScript", "PHP", "MySQL"]
     },
     {
       "name": "Text-Based Adventure Game",
