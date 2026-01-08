@@ -7,21 +7,39 @@
     <meta name="keywords" content="portfolio, developer, full stack, BCA, Python, PHP, JavaScript">
     <meta name="author" content="Sneh">
     <title>Sneh | Full Stack Developer & BCA Student</title>
+    <script>
+        // Prevent FOUC by applying theme class before CSS loads.
+        // If user has no saved preference, default to dark to match JS behavior.
+        (function() {
+            try {
+                var theme = localStorage.getItem('theme');
+                if (theme === 'light') {
+                    // ensure light: remove any dark-mode class
+                    document.documentElement.classList.remove('dark-mode');
+                } else {
+                    // default to dark when no preference or explicitly 'dark'
+                    document.documentElement.classList.add('dark-mode');
+                }
+            } catch (e) {
+                // ignore (e.g., blocked localStorage)
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation">
         <div class="container">
             <div class="nav-wrapper">
                 <div class="logo">
                     <a href="#home" class="logo-text">Sneh</a>
                 </div>
-                <div class="nav-toggle" id="navToggle">
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">
                     <span></span>
                     <span></span>
                     <span></span>
-                </div>
+                </button>
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="#home" class="nav-link">Home</a></li>
                     <li><a href="#about" class="nav-link">About</a></li>
@@ -31,7 +49,7 @@
                     <li><a href="#experience" class="nav-link">Experience</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                     <li>
-                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" aria-pressed="false">
                             <span class="theme-icon">🌙</span>
                         </button>
                     </li>
@@ -44,50 +62,72 @@
     <section id="home" class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1 class="hero-title">Hi, I'm Sneh</h1>
-                <p class="hero-tagline">Full Stack Developer | BCA Student | Python Enthusiast</p>
-                <p class="hero-description">Passionate about building modern web applications and solving complex problems with code</p>
-                <div class="hero-buttons">
-                    <a href="#resume" class="btn btn-primary">Download Resume</a>
-                    <a href="#contact" class="btn btn-secondary">Contact Me</a>
+                <h1 class="hero-title reveal-item" data-delay="0.05">Hi, I'm Sneh</h1>
+                <p class="hero-subtitle reveal-item" data-delay="0.15">Software developer focused on building reliable, accessible web applications.</p>
+                <p class="hero-tagline reveal-item" aria-live="polite" data-delay="0.3">
+                    <span id="typed" class="typed-text"></span><span class="typed-cursor" aria-hidden="true">|</span>
+                </p>
+                <p class="hero-description reveal-item" data-delay="0.45">Passionate about building modern web applications and solving complex problems with code</p>
+                <div class="hero-buttons reveal-item" data-delay="0.6">
+                    <a href="#resume" class="btn btn-primary" aria-label="Download resume">Download Resume</a>
+                    <a href="#contact" class="btn btn-secondary" aria-label="Contact me">Contact Me</a>
                 </div>
-                <div class="scroll-indicator">
-                    <span>Scroll to explore</span>
+                <div class="scroll-indicator reveal-item" aria-hidden="true" data-delay="0.8">
+                    <div class="mouse">
+                        <span class="wheel"></span>
+                    </div>
+                    <span class="scroll-text">Scroll to explore</span>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Projects moved above -->
 
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
             <h2 class="section-title">About Me</h2>
             <div class="about-content">
-                <div class="about-image">
-                    <img src="assets/profile.jpeg" alt="Profile photo" class="profile-img">
-                </div>
+                <aside class="about-aside" aria-label="Profile and interests">
+                        <figure class="profile-figure">
+                            <img src="assets/profile.jpeg" alt="Sneh - profile photo" class="profile-img">
+                        </figure>
+
+                        <div class="interests" aria-labelledby="interestsHeading">
+                            <h3 id="interestsHeading">Interests</h3>
+                            <ul class="interests-list">
+                                <li><button class="interest-pill" type="button">Full Stack Development</button></li>
+                                <li><button class="interest-pill" type="button">Python Programming</button></li>
+                                <li><button class="interest-pill" type="button">Data Analysis</button></li>
+                                <li><button class="interest-pill" type="button">Web Development</button></li>
+                            </ul>
+                        </div>
+                    </aside>
                 <div class="about-text">
-                    <p>
-                        I'm a passionate full stack developer and BCA student with a strong foundation in computer science. 
-                        I love building intuitive web applications that solve real-world problems.
-                    </p>
-                    <p>
-                        With expertise in Python, PHP, and JavaScript, I'm constantly learning and exploring new technologies. 
-                        My journey in tech has been driven by curiosity and a desire to create impactful solutions.
-                    </p>
-                    <p>
-                        Currently pursuing my Bachelor of Computer Applications with an expected graduation in 2026. 
-                        I'm interested in full stack development, data analysis, and web technologies that make a difference.
-                    </p>
-                    <div class="interests">
-                        <h3>Interests</h3>
-                        <ul class="interests-list">
-                            <li>🚀 Full Stack Development</li>
-                            <li>🐍 Python Programming</li>
-                            <li>📊 Data Analysis</li>
-                            <li>🌐 Web Development</li>
+                    <p class="mission">Mission: Build reliable, accessible, and maintainable web applications that solve real problems and help teams move faster.</p>
+
+                    <ul class="about-list">
+                        <li><strong>Current:</strong> BCA student (Expected 2026) — focused on software engineering and data-driven apps.</li>
+                        <li><strong>Tech:</strong> Python, PHP, JavaScript, HTML/CSS, MySQL — experienced building full-stack apps.</li>
+                        <li><strong>Experience:</strong> Internship at Vaidsys Technologies — contributed to full-stack features and performance improvements.</li>
+                        <li><strong>Projects:</strong> Resume Analyzer, Full Stack PHP Admin Panel, Python Dashboards & Automation — end-to-end development.</li>
+                    </ul>
+
+                    <div class="about-highlights">
+                        <h4>Highlights</h4>
+                        <ul>
+                            <li>Built responsive admin panels with authentication and CRUD features.</li>
+                            <li>Implemented data dashboards using Python and visualization libraries.</li>
                         </ul>
                     </div>
+
+                    <div class="about-actions">
+                        <a href="assets/resume.pdf" class="btn btn-secondary about-cta" download aria-label="Download resume">Download Resume</a>
+                        <a href="#projects" class="btn btn-primary about-cta" aria-label="View projects">See Projects</a>
+                    </div>
+
+                    
                 </div>
             </div>
         </div>
@@ -97,7 +137,7 @@
     <section id="skills" class="skills">
         <div class="container">
             <h2 class="section-title">Skills & Expertise</h2>
-            <div class="skills-grid">
+                <div class="skills-grid">
                 <!-- Programming Languages -->
                 <div class="skill-category">
                     <h3>Programming Languages</h3>
@@ -147,24 +187,52 @@
                     </div>
                 </div>
 
-                <!-- Data Skills -->
+                <!-- Backend & Full Stack -->
+                <div class="skill-category">
+                    <h3>Backend & Full Stack</h3>
+                    <div class="skill-cards">
+                        <div class="skill-card">
+                            <div class="skill-icon">🔐</div>
+                            <div class="skill-name">Authentication & Authorization</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🧩</div>
+                            <div class="skill-name">CRUD Operations</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🔄</div>
+                            <div class="skill-name">REST API Integration</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🗃️</div>
+                            <div class="skill-name">MySQL / Database Design</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data & Databases -->
                 <div class="skill-category">
                     <h3>Data & Databases</h3>
                     <div class="skill-cards">
                         <div class="skill-card">
                             <div class="skill-icon">📊</div>
                             <div class="skill-name">Data Analysis</div>
-                            <div class="skill-level">Advanced</div>
                         </div>
                         <div class="skill-card">
-                            <div class="skill-icon">🗄️</div>
-                            <div class="skill-name">SQL</div>
-                            <div class="skill-level">Advanced</div>
+                            <div class="skill-icon">🧮</div>
+                            <div class="skill-name">Pandas</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">📈</div>
+                            <div class="skill-name">Data Visualization</div>
                         </div>
                         <div class="skill-card">
                             <div class="skill-icon">🔍</div>
                             <div class="skill-name">Web Scraping</div>
-                            <div class="skill-level">Intermediate</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🗄️</div>
+                            <div class="skill-name">SQL</div>
                         </div>
                     </div>
                 </div>
@@ -176,27 +244,45 @@
                         <div class="skill-card">
                             <div class="skill-icon">💻</div>
                             <div class="skill-name">GitHub</div>
-                            <div class="skill-level">Advanced</div>
                         </div>
                         <div class="skill-card">
                             <div class="skill-icon">📝</div>
                             <div class="skill-name">VS Code</div>
-                            <div class="skill-level">Advanced</div>
                         </div>
                         <div class="skill-card">
                             <div class="skill-icon">⚙️</div>
                             <div class="skill-name">XAMPP</div>
-                            <div class="skill-level">Advanced</div>
                         </div>
                         <div class="skill-card">
                             <div class="skill-icon">🐧</div>
                             <div class="skill-name">Linux</div>
-                            <div class="skill-level">Intermediate</div>
                         </div>
                         <div class="skill-card">
                             <div class="skill-icon">🎨</div>
                             <div class="skill-name">Figma</div>
-                            <div class="skill-level">Intermediate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dev & Deployment -->
+                <div class="skill-category">
+                    <h3>Dev & Deployment</h3>
+                    <div class="skill-cards">
+                        <div class="skill-card">
+                            <div class="skill-icon">🐙</div>
+                            <div class="skill-name">Git & Version Control</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🌐</div>
+                            <div class="skill-name">GitHub Pages</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">🐞</div>
+                            <div class="skill-name">Debugging</div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">📂</div>
+                            <div class="skill-name">Project Structuring</div>
                         </div>
                     </div>
                 </div>
@@ -286,6 +372,7 @@
                         <h3>📄 My Resume</h3>
                         <p id="resumeName">Loading...</p>
                         <p id="resumeEmail">Loading...</p>
+                        <p id="resumePhone">Loading...</p>
                         <div class="skills-preview">
                             <h4>Key Skills</h4>
                             <div id="resumeSkills">Loading...</div>
@@ -347,6 +434,10 @@
                             <a href="mailto:popatsneh7@gmail.com">popatsneh7@gmail.com</a>
                         </div>
                         <div class="contact-item">
+                            <span class="contact-label">Phone:</span>
+                            <a href="tel:+919512590277">+91 9512590277</a>
+                        </div>
+                        <div class="contact-item">
                             <span class="contact-label">LinkedIn:</span>
                             <a href="https://www.linkedin.com/in/sneh-popat-6183ba267/" target="_blank">LinkedIn Profile</a>
                         </div>
@@ -388,7 +479,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-text">
-                    <p>&copy; 2024 Sneh. All rights reserved.</p>
+                    <p>&copy; 2026 Sneh. All rights reserved.</p>
                 </div>
                 <div class="footer-links">
                     <a href="https://github.com/sneh-0101" target="_blank" aria-label="GitHub" class="footer-link">

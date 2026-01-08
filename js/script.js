@@ -4,21 +4,240 @@ const themeToggle = document.getElementById('themeToggle');
 const htmlElement = document.documentElement;
 const themeIcon = document.querySelector('.theme-icon');
 
-// Check for saved theme preference or default to light mode
-const savedTheme = localStorage.getItem('theme') || 'light';
-if (savedTheme === 'dark') {
-    document.body.classList.add('dark-mode');
-    themeIcon.textContent = '☀️';
+// Check for saved theme preference. If none, default to dark mode on first load
+let savedTheme = localStorage.getItem('theme');
+if (!savedTheme) {
+    // No preference saved yet — default to dark mode and persist it
+    savedTheme = 'dark';
+    try { localStorage.setItem('theme', 'dark'); } catch (e) {}
+}
+
+function applyDarkModeClass(enabled) {
+    // Apply class to both html and body to ensure CSS variables take effect
+    if (enabled) {
+        document.documentElement.classList.add('dark-mode');
+        if (document.body) document.body.classList.add('dark-mode');
+        themeIcon.textContent = '☀️';
+    } else {
+        document.documentElement.classList.remove('dark-mode');
+        if (document.body) document.body.classList.remove('dark-mode');
+        themeIcon.textContent = '🌙';
+    }
+}
+
+applyDarkModeClass(savedTheme === 'dark');
+
+// ==================== Typing Animation (Home Tagline) ====================
+const typingPhrases = [
+    'Full Stack Developer',
+    "BCA Student",
+    'Python Enthusiast'
+];
+
+function startTyping(elId = 'typed', speed = 80, pause = 1200) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function tick() {
+        const current = typingPhrases[phraseIndex];
+        if (!deleting) {
+            el.textContent = current.slice(0, ++charIndex);
+            if (charIndex === current.length) {
+                deleting = true;
+                setTimeout(tick, pause);
+                return;
+            }
+        } else {
+            el.textContent = current.slice(0, --charIndex);
+            if (charIndex === 0) {
+                deleting = false;
+                phraseIndex = (phraseIndex + 1) % typingPhrases.length;
+            }
+        }
+        setTimeout(tick, deleting ? speed / 2 : speed);
+    }
+
+    tick();
+}
+
+// ==================== Projects: Filter + Modal ====================
+function initProjectFilters() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projects = document.querySelectorAll('.project-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filter = btn.dataset.filter;
+            projects.forEach(p => {
+                const cats = (p.dataset.category || '').split(' ');
+                if (filter === 'all' || cats.includes(filter)) {
+                    p.style.display = '';
+                } else {
+                    p.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Modal + Carousel logic
+    const modal = document.getElementById('projectModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalTech = document.getElementById('modalTech');
+    const modalLive = document.getElementById('modalLive');
+    const modalGit = document.getElementById('modalGit');
+    const carouselTrack = modal.querySelector('.carousel-track');
+    const prevBtn = modal.querySelector('.carousel-prev');
+    const nextBtn = modal.querySelector('.carousel-next');
+    const indicators = modal.querySelector('.carousel-indicators');
+
+    let currentSlide = 0;
+    let slideCount = 0;
+    let lastFocusedElement = null;
+
+    function buildSlidesFromCard(card) {
+        const imgs = Array.from(card.querySelectorAll('img'))
+            .map(i => ({ src: i.src, alt: i.alt || card.dataset.title || '' }));
+        // If no images discovered, use a fallback based on title
+        if (imgs.length === 0) {
+            imgs.push({ src: '', alt: card.dataset.title || 'Project image' });
+        }
+        return imgs;
+    }
+
+    function renderCarousel(slides) {
+        carouselTrack.innerHTML = '';
+        indicators.innerHTML = '';
+        slideCount = slides.length;
+        slides.forEach((s, idx) => {
+            const slide = document.createElement('div');
+            slide.className = 'carousel-slide';
+            slide.setAttribute('role', 'group');
+            slide.setAttribute('aria-roledescription', 'slide');
+            slide.setAttribute('aria-label', `${idx + 1} of ${slides.length}`);
+
+            const img = document.createElement('img');
+            img.src = s.src;
+            img.alt = s.alt;
+            slide.appendChild(img);
+            carouselTrack.appendChild(slide);
+
+            const dot = document.createElement('button');
+            dot.className = '';
+            dot.setAttribute('aria-label', `Go to slide ${idx + 1}`);
+            dot.addEventListener('click', () => { goToSlide(idx); });
+            indicators.appendChild(dot);
+        });
+        currentSlide = 0;
+        updateCarousel();
+    }
+
+    function updateCarousel() {
+        const offset = -currentSlide * 100;
+        carouselTrack.style.transform = `translateX(${offset}%)`;
+        // update indicators
+        Array.from(indicators.children).forEach((b, i) => {
+            b.classList.toggle('active', i === currentSlide);
+        });
+        // set aria-hidden on slides
+        Array.from(carouselTrack.children).forEach((s, i) => {
+            s.setAttribute('aria-hidden', i === currentSlide ? 'false' : 'true');
+        });
+    }
+
+    function prevSlide() { currentSlide = (currentSlide - 1 + slideCount) % slideCount; updateCarousel(); }
+    function nextSlide() { currentSlide = (currentSlide + 1) % slideCount; updateCarousel(); }
+    function goToSlide(i) { currentSlide = Math.max(0, Math.min(i, slideCount - 1)); updateCarousel(); }
+
+    // Open modal: populate content and build carousel
+    document.querySelectorAll('.details-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const card = e.target.closest('.project-card');
+            if (!card) return;
+            lastFocusedElement = document.activeElement;
+
+            const title = card.dataset.title || '';
+            const desc = card.dataset.desc || '';
+            const techs = (card.dataset.tech || '').split(',').filter(Boolean);
+            modalTitle.textContent = title;
+            modalDesc.textContent = desc;
+            modalTech.innerHTML = '';
+            techs.forEach(t => {
+                const span = document.createElement('span');
+                span.className = 'tech-tag';
+                span.textContent = t;
+                modalTech.appendChild(span);
+            });
+            const gitLink = card.querySelector('a[target="_blank"][href*="github.com"]');
+            modalGit.href = gitLink ? gitLink.href : '#';
+            modalLive.href = card.querySelector('a[data-live]') ? (card.querySelector('a[data-live]').getAttribute('data-live') || '#') : '#';
+
+            const slides = buildSlidesFromCard(card);
+            renderCarousel(slides);
+
+            // show modal
+            modal.setAttribute('aria-hidden', 'false');
+            // focus management
+            const focusTarget = modal.querySelector('.modal-close') || modal;
+            focusTarget.focus();
+            // add keyboard handlers while modal open
+            document.addEventListener('keydown', keyboardHandler);
+        });
+    });
+
+    // Close modal with restore
+    const modalClose = modal.querySelector('.modal-close');
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    function keyboardHandler(e) {
+        if (modal.getAttribute('aria-hidden') === 'true') return;
+        if (e.key === 'Escape') {
+            closeModal();
+        } else if (e.key === 'ArrowLeft') {
+            prevSlide();
+        } else if (e.key === 'ArrowRight') {
+            nextSlide();
+        } else if (e.key === 'Tab') {
+            // simple focus trap
+            const focusable = modal.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+            if (focusable.length === 0) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        }
+    }
+
+    function closeModal() {
+        modal.setAttribute('aria-hidden', 'true');
+        document.removeEventListener('keydown', keyboardHandler);
+        // restore focus
+        try { if (lastFocusedElement) lastFocusedElement.focus(); } catch (e) {}
+    }
 }
 
 themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    
     const isDarkMode = document.body.classList.contains('dark-mode');
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    
-    // Update icon
-    themeIcon.textContent = isDarkMode ? '☀️' : '🌙';
+    // Toggle based on current state; ensure both html and body updated
+    applyDarkModeClass(!isDarkMode);
+    try { localStorage.setItem('theme', !isDarkMode ? 'dark' : 'light'); } catch (e) {}
+    // Update aria-pressed
+    themeToggle.setAttribute('aria-pressed', (!isDarkMode).toString());
 });
 
 // ==================== Mobile Navigation ====================
@@ -28,8 +247,13 @@ const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
 
 navToggle.addEventListener('click', () => {
-    navToggle.classList.toggle('active');
+    const isActive = !navToggle.classList.toggle('active');
     navMenu.classList.toggle('active');
+
+    // Update accessibility attributes
+    const expanded = navToggle.classList.contains('active') ? 'true' : 'false';
+    navToggle.setAttribute('aria-expanded', expanded);
+    navMenu.setAttribute('aria-hidden', expanded === 'false' ? 'true' : 'false');
 });
 
 // Close mobile menu when a link is clicked
@@ -37,8 +261,21 @@ navLinks.forEach(link => {
     link.addEventListener('click', () => {
         navToggle.classList.remove('active');
         navMenu.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navMenu.setAttribute('aria-hidden', 'true');
     });
 });
+
+// Make navbar sticky / add scrolled class for visual changes
+const navbar = document.querySelector('.navbar');
+function handleScroll() {
+    if (window.scrollY > 20) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+}
+window.addEventListener('scroll', handleScroll);
 
 // ==================== Smooth Scrolling ====================
 
@@ -60,7 +297,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const resumeData = {
     name: 'Sneh',
     email: 'popatsneh7@gmail.com',
-    phone: '+91 XXXXXXXXXX',
+    phone: '+91 9512590277',
     location: 'India',
     skills: ['Python', 'PHP', 'JavaScript', 'HTML', 'CSS', 'MySQL', 'Data Analysis', 'Git'],
     summary: 'Full Stack Developer & BCA Student with expertise in web development and data analysis'
@@ -70,6 +307,8 @@ const resumeData = {
 function loadResumeData() {
     document.getElementById('resumeName').textContent = `Name: ${resumeData.name}`;
     document.getElementById('resumeEmail').textContent = `Email: ${resumeData.email}`;
+    const phoneEl = document.getElementById('resumePhone');
+    if (phoneEl) phoneEl.textContent = `Phone: ${resumeData.phone}`;
     
     const skillsContainer = document.getElementById('resumeSkills');
     skillsContainer.innerHTML = '';
@@ -281,10 +520,38 @@ document.head.appendChild(style);
 document.addEventListener('DOMContentLoaded', () => {
     loadResumeData();
     
+    // Initialize accessibility attributes for mobile menu
+    if (navMenu) navMenu.setAttribute('aria-hidden', navMenu.classList.contains('active') ? 'false' : 'true');
+    if (navToggle) navToggle.setAttribute('aria-expanded', navToggle.classList.contains('active') ? 'true' : 'false');
+
     // Add a little delay for better UX
     setTimeout(() => {
         document.body.style.opacity = '1';
     }, 100);
+
+    // Start typing animation for hero tagline
+    startTyping('typed');
+
+    // Staggered reveal for hero items (avoid if reduced motion)
+    try {
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const items = document.querySelectorAll('.hero-content .reveal-item');
+            items.forEach(item => {
+                const delay = parseFloat(item.dataset.delay) || 0;
+                setTimeout(() => item.classList.add('visible'), delay * 1000);
+            });
+        } else {
+            // If user prefers reduced motion, make all visible immediately
+            document.querySelectorAll('.hero-content .reveal-item').forEach(i => i.classList.add('visible'));
+        }
+    } catch (e) {
+        // ignore
+    }
+});
+
+// Initialize project filters & modal after DOM content loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initProjectFilters();
 });
 
 // ==================== Parallax Effect ====================
