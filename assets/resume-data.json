@@ -1,0 +1,59 @@
+{
+  "name": "Sneh",
+  "email": "popatsneh7@gmail.com",
+  "phone": "+91 XXXXXXXXXX",
+  "location": "India",
+  "role": "Full Stack Developer",
+  "summary": "Full Stack Developer & BCA Student with expertise in web development and data analysis",
+  "skills": [
+    "Python",
+    "PHP",
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "MySQL",
+    "Data Analysis",
+    "Git",
+    "XAMPP",
+    "Linux"
+  ],
+  "experience": [
+    {
+      "title": "Internship",
+      "company": "Vaidsys Technologies",
+      "location": "Remote",
+      "duration": "3 months",
+      "description": "Worked on full-stack development projects and code optimization"
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Computer Applications",
+      "school": "University Name",
+      "year": "Expected 2026",
+      "details": "Pursuing comprehensive degree in computer applications"
+    }
+  ],
+  "projects": [
+    {
+      "name": "AI Resume Analyzer & Job Matcher",
+      "description": "Intelligent system analyzing resumes and matching with job opportunities",
+      "technologies": ["Python", "NLP", "Machine Learning"]
+    },
+    {
+      "name": "Full Stack PHP Web Application",
+      "description": "Complete admin panel with CRUD operations and authentication",
+      "technologies": ["PHP", "MySQL", "JavaScript"]
+    },
+    {
+      "name": "Python Dashboards & Automation",
+      "description": "Data visualization and automation scripts",
+      "technologies": ["Python", "Pandas", "Data Visualization"]
+    },
+    {
+      "name": "Text-Based Adventure Game",
+      "description": "Interactive game with multiple storylines in Python",
+      "technologies": ["Python", "OOP"]
+    }
+  ]
+}

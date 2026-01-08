@@ -1,0 +1,31 @@
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Build Files
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# System Files
+.env
+.env.local
+.cache
+
+# Optional: Sensitive Information
+# Uncomment if you don't want to commit credentials
+# config.json
+# secrets.json
