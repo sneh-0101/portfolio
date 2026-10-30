@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CipherLab | Combinatorics Security Studio</title>
+<style>
+:root{--bg:#080d19;--panel:#111a2b;--panel2:#172238;--line:#263650;--text:#edf3ff;--muted:#9aabc5;--cyan:#56e0d0;--blue:#7798ff;--purple:#b28cff;--green:#64dda2;--yellow:#ffd477;--red:#ff7d91}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#18264a 0,transparent 32%),var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:1320px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:grid;place-items:center;color:#07111c;font-weight:900;font-size:21px;box-shadow:0 8px 30px #56e0d033}.brand h1{font-size:21px;letter-spacing:.4px;margin:0}.brand p{margin:0;color:var(--muted);font-size:12px}.pill{border:1px solid #31516b;background:#102536;color:var(--cyan);padding:7px 12px;border-radius:30px;font-size:12px}
+.hero{padding:30px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(115deg,#14233a,#111a2b 60%,#1c1d3b);display:grid;grid-template-columns:1.4fr .6fr;gap:24px;align-items:center;margin-bottom:22px}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:2px;font-weight:800;text-transform:uppercase}.hero h2{font-size:clamp(27px,4vw,43px);line-height:1.12;margin:9px 0 12px}.hero p{color:var(--muted);max-width:700px;margin:0}.hero-stat{border:1px solid #334969;border-radius:18px;padding:18px;background:#0b1424aa}.hero-stat strong{font-size:32px;display:block;color:var(--cyan)}.hero-stat span{color:var(--muted);font-size:12px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.tab{padding:10px 15px;background:#111a2b;border:1px solid var(--line);color:var(--muted);border-radius:12px}.tab.active{background:#183449;border-color:#397a83;color:var(--cyan)}
+.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}.card{background:linear-gradient(145deg,#121d30,#0f1727);border:1px solid var(--line);border-radius:20px;padding:21px;min-width:0}.card h3{margin:0 0 5px;font-size:17px}.sub{color:var(--muted);font-size:13px;margin:0 0 18px}.field{margin:14px 0}.field label{display:flex;justify-content:space-between;color:#c5d2e7;font-size:13px;margin-bottom:7px}.field input[type=number],.field input[type=text],.field select{width:100%;padding:11px 12px;border:1px solid #31415c;background:#0a1322;color:var(--text);border-radius:11px;outline:none}.field input:focus,.field select:focus{border-color:var(--cyan)}input[type=range]{width:100%;accent-color:var(--cyan)}.checks{display:flex;gap:12px;flex-wrap:wrap}.checks label{display:flex;gap:7px;align-items:center;color:var(--muted);font-size:13px}.checks input{accent-color:var(--cyan)}
+.btn{padding:11px 15px;border-radius:11px;background:linear-gradient(100deg,#56e0d0,#7798ff);color:#07111c;font-weight:800}.btn.secondary{background:#1b2940;color:#dce8ff;border:1px solid #354865}.btnrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.result{background:#0a1424;border:1px solid #263c57;border-radius:15px;padding:16px;margin-top:15px}.big{font-size:clamp(25px,4vw,36px);font-weight:850;letter-spacing:-1px;color:var(--cyan);overflow-wrap:anywhere}.muted{color:var(--muted);font-size:12px}.meter{height:9px;border-radius:20px;background:#25334a;overflow:hidden;margin:10px 0}.meter span{height:100%;display:block;width:0;background:linear-gradient(90deg,var(--red),var(--yellow),var(--green));transition:width .35s}.statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}.mini{background:#111e31;border:1px solid #263750;padding:12px;border-radius:13px}.mini b{display:block;font-size:18px}.mini small{color:var(--muted)}.formula{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#091321;border:1px solid #273a55;border-radius:10px;padding:12px;color:#b9d9ff;overflow-wrap:anywhere;font-size:13px}.hidden{display:none!important}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{text-align:left;padding:10px;border-bottom:1px solid #263650}.table th{color:var(--muted);font-weight:600}.good{color:var(--green)}.warn{color:var(--yellow)}.bad{color:var(--red)}.note{padding:12px 14px;border-left:3px solid var(--purple);background:#201b37;border-radius:8px;color:#d4c8f4;font-size:12px;margin-top:14px}.barrow{display:grid;grid-template-columns:65px 1fr 105px;gap:10px;align-items:center;margin:13px 0;font-size:12px}.bar{height:10px;border-radius:20px;background:#25334a;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan))}.footer{color:#71839e;text-align:center;font-size:12px;padding:25px 0 8px}.section{display:none}.section.active{display:block}.quizopt{display:block;width:100%;text-align:left;padding:12px;margin:8px 0;border:1px solid #2b3d59;border-radius:10px;background:#101b2d;color:var(--text)}.quizopt:hover{border-color:var(--cyan)}.feedback{font-size:13px;margin-top:10px}
+@media(max-width:850px){.hero,.layout{grid-template-columns:1fr}.app{padding:15px}.hero{padding:22px}.top{align-items:flex-start;flex-direction:column}}@media(max-width:480px){.statgrid{grid-template-columns:1fr}.barrow{grid-template-columns:55px 1fr 85px}}
+
+/* ===== CipherLab Premium Light Theme ===== */
+:root{
+  --bg:#f5f8fc;
+  --panel:#ffffff;
+  --panel2:#f8fafc;
+  --line:#e2e8f0;
+  --text:#172b4d;
+  --muted:#64748b;
+  --cyan:#0d9488;
+  --blue:#173b67;
+  --purple:#7863b5;
+  --green:#15865c;
+  --yellow:#b7791f;
+  --red:#d1435b;
+}
+body{
+  background:radial-gradient(circle at 85% 0%,#e7f1ff 0,transparent 34%),#f5f8fc;
+  color:var(--text);
+}
+.logo{
+  background:linear-gradient(135deg,#0d9488,#173b67);
+  color:#fff;
+  box-shadow:0 8px 24px #173b6720;
+}
+.brand h1{color:#173b67}
+.brand p{color:#64748b}
+.pill{
+  border:1px solid #b8e2dc;
+  background:#ecfdf9;
+  color:#087f75;
+}
+.hero{
+  border:1px solid #dce7f3;
+  background:linear-gradient(115deg,#ffffff 0%,#f0f6ff 62%,#eaf8f6 100%);
+  box-shadow:0 12px 35px #173b670b;
+}
+.eyebrow{color:#0d9488}
+.hero p{color:#64748b}
+.hero-stat{
+  border:1px solid #d9e5f2;
+  background:#ffffff;
+  box-shadow:0 8px 25px #173b670b;
+}
+.hero-stat strong{color:#0d9488}
+.hero-stat span{color:#64748b}
+.tab{
+  background:#ffffff;
+  border:1px solid #e2e8f0;
+  color:#64748b;
+  box-shadow:0 2px 8px #173b6708;
+  transition:all .2s ease;
+}
+.tab:hover{border-color:#8fcfc7;color:#173b67;background:#f8fffd}
+.tab.active{
+  background:#eaf8f6;
+  border-color:#8bd0c7;
+  color:#087f75;
+  box-shadow:inset 0 -2px 0 #0d9488;
+}
+.card{
+  background:#ffffff;
+  border:1px solid #e2e8f0;
+  box-shadow:0 8px 24px #173b6709;
+}
+.card h3{color:#173b67}
+.sub{color:#64748b}
+.field label{color:#334765}
+.field input[type=number],
+.field input[type=text],
+.field select{
+  border:1px solid #d7e0eb;
+  background:#fbfdff;
+  color:#172b4d;
+}
+.field input:focus,.field select:focus{
+  border-color:#0d9488;
+  box-shadow:0 0 0 3px #0d94881a;
+}
+.checks label{color:#52647d}
+.checks input{accent-color:#0d9488}
+.btn{
+  background:linear-gradient(100deg,#0d9488,#173b67);
+  color:#fff;
+  box-shadow:0 5px 14px #0d948824;
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px #0d94882b}
+.btn.secondary{
+  background:#f1f5f9;
+  color:#173b67;
+  border:1px solid #d9e2ed;
+  box-shadow:none;
+}
+.result{
+  background:#f8fbff;
+  border:1px solid #dce7f3;
+}
+.big{color:#0d9488}
+.muted{color:#64748b}
+.meter{background:#e5edf5}
+.meter span{background:linear-gradient(90deg,#173b67,#0d9488)}
+.mini{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+}
+.mini b{color:#173b67}
+.mini small{color:#64748b}
+.formula{
+  background:#f1f6fb;
+  border:1px solid #dce7f3;
+  color:#244b73;
+}
+.note{
+  border-left:3px solid #0d9488;
+  background:#effaf8;
+  color:#365e62;
+}
+.table th,.table td{border-bottom:1px solid #e5ebf2}
+.table th{color:#64748b}
+.good{color:#15865c}
+.warn{color:#a66b13}
+.bad{color:#c43e55}
+.bar{background:#e6edf5}
+.bar i{background:linear-gradient(90deg,#173b67,#0d9488)}
+.quizopt{
+  border:1px solid #dce5ef;
+  background:#fbfdff;
+  color:#243b5a;
+  transition:all .18s ease;
+}
+.quizopt:hover{
+  border-color:#0d9488;
+  background:#effaf8;
+}
+.footer{color:#8795a8}
+@media(max-width:850px){
+  .hero{background:linear-gradient(145deg,#fff,#eff6ff 65%,#eaf8f6)}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="brand"><div class="logo">C</div><div><h1>CIPHERLAB</h1><p>COMBINATORICS SECURITY STUDIO</p></div></div><div class="pill">● LOCAL DEMO · NO DATA UPLOADED</div></header>
+<section class="hero"><div><div class="eyebrow">Mathematics × Cybersecurity</div><h2>Explore the mathematics<br>behind digital security.</h2><p>Turn permutations, combinations and counting principles into interactive security experiments. Change the inputs, inspect the formulas and discover how the size of a search space changes security.</p></div><div class="hero-stat"><strong id="heroCount">10,000</strong><span>possible 4-digit PINs · repetition allowed</span></div></section>
+<nav class="tabs">
+<button class="tab active" data-tab="pin">PIN Lab</button><button class="tab" data-tab="password">Password Lab</button><button class="tab" data-tab="entropy">Entropy Analyzer</button><button class="tab" data-tab="explorer">nPr / nCr Explorer</button><button class="tab" data-tab="challenge">Security Challenge</button>
+</nav>
+<section id="pin" class="section active">
+<div class="layout">
+<div class="card"><h3>PIN combination calculator</h3><p class="sub">Calculate the size of a numeric PIN search space.</p>
+<div class="field"><label>PIN length <b id="pinLenLabel">4 digits</b></label><input id="pinLen" type="range" min="1" max="12" value="4"></div>
+<div class="checks"><label><input id="pinRepeat" type="checkbox" checked> Repetition allowed</label><label><input id="pinZero" type="checkbox" checked> Leading zero allowed</label></div>
+<div class="btnrow"><button class="btn" id="calcPin">Calculate PIN space</button></div>
+<div class="result"><div class="muted">TOTAL POSSIBLE PINs</div><div class="big" id="pinTotal">10,000</div><div class="formula" id="pinFormula">10⁴ = 10,000</div><div class="statgrid"><div class="mini"><b id="pinBits">13.29 bits</b><small>Search-space entropy</small></div><div class="mini"><b id="pinChance">0.01%</b><small>One-guess probability</small></div></div></div>
+</div>
+<div class="card"><h3>PIN length comparison</h3><p class="sub">See how each extra digit expands the search space.</p><div id="pinBars"></div><div class="note">Model assumptions: each digit is selected uniformly. This is a mathematical search-space model, not a prediction of real-world attack success. Rate limits and lockouts can change practical risk.</div></div>
+</div></section>
+<section id="password" class="section">
+<div class="layout">
+<div class="card"><h3>Password space builder</h3><p class="sub">Choose a character pool and calculate all possible strings of a fixed length.</p>
+<div class="field"><label>Password length <b id="pwLenLabel">12 characters</b></label><input id="pwLen" type="range" min="1" max="40" value="12"></div>
+<div class="checks"><label><input id="lower" type="checkbox" checked> Lowercase (26)</label><label><input id="upper" type="checkbox" checked> Uppercase (26)</label><label><input id="digits" type="checkbox" checked> Digits (10)</label><label><input id="symbols" type="checkbox"> Symbols (32)</label></div>
+<div class="btnrow"><button class="btn" id="calcPw">Calculate search space</button><button class="btn secondary" id="generatePw">Generate sample password</button></div>
+<div class="result"><div class="muted">CHARACTER POOL SIZE</div><div class="big" id="poolSize">62</div><div class="formula" id="pwFormula">62¹² possible strings</div><div class="statgrid"><div class="mini"><b id="pwCount">3.23 × 10²¹</b><small>Possible strings</small></div><div class="mini"><b id="pwBits">71.45 bits</b><small>Maximum theoretical entropy</small></div></div><div class="field"><label>Generated example</label><input type="text" id="generated" readonly value="Click Generate sample password"></div><div class="muted">Generated locally using your browser's cryptographic random generator where available.</div></div>
+</div>
+<div class="card"><h3>How the counting principle works</h3><p class="sub">Each position can contain any character from the selected pool.</p><div class="formula">Total strings = (pool size) ^ (password length)</div><p class="muted">If the pool contains 62 characters and the password has 12 positions, there are 62 choices for each position. By the multiplication principle, multiply 62 by itself 12 times.</p><div class="result"><div class="muted">ILLUSTRATIVE SEARCH-SPACE SCALE</div><div id="pwScale" class="big">3.23 × 10²¹</div><div class="meter"><span id="pwMeter" style="width:71%"></span></div><div class="muted">Entropy is log₂(total possibilities). Actual password strength also depends on predictability, reuse and how passwords are chosen.</div></div></div>
+</div></section>
+<section id="entropy" class="section">
+<div class="layout">
+<div class="card"><h3>Entropy & guessing-time analyzer</h3><p class="sub">Estimate theoretical search effort for a uniformly random password.</p>
+<div class="field"><label>Character pool size</label><input id="poolCustom" type="number" min="2" max="1000" value="62"></div>
+<div class="field"><label>Password length</label><input id="lenCustom" type="number" min="1" max="200" value="12"></div>
+<div class="field"><label>Hypothetical guesses per second</label><select id="rate"><option value="1000">1,000 · slow online-style example</option><option value="1000000" selected>1 million · illustrative rate</option><option value="1000000000">1 billion · high-speed hypothetical</option><option value="1000000000000">1 trillion · extreme hypothetical</option></select></div>
+<button class="btn" id="calcEntropy">Analyze theoretical strength</button>
+<div class="result"><div class="muted">THEORETICAL ENTROPY</div><div class="big" id="entropyBits">71.45 bits</div><div class="meter"><span id="entropyMeter" style="width:71%"></span></div><div class="statgrid"><div class="mini"><b id="entropySpace">3.23 × 10²¹</b><small>Possible strings</small></div><div class="mini"><b id="guessTime">51,000 years</b><small>Average exhaustive-search time</small></div></div></div>
+</div>
+<div class="card"><h3>Interpret the result</h3><table class="table"><tr><th>Entropy</th><th>Illustrative interpretation</th></tr><tr><td>Below 28 bits</td><td class="bad">Small search space</td></tr><tr><td>28–59 bits</td><td class="warn">Moderate search space</td></tr><tr><td>60–79 bits</td><td class="good">Large search space</td></tr><tr><td>80+ bits</td><td class="good">Very large search space</td></tr></table><div class="note">These are educational bands, not a universal security standard. The time estimate assumes uniformly random candidates and a constant guessing rate. Real attackers may use dictionaries, leaked passwords, throttling or other strategies.</div></div>
+</div></section>
+<section id="explorer" class="section">
+<div class="layout">
+<div class="card"><h3>Permutation & combination explorer</h3><p class="sub">Compare arrangements (order matters) with selections (order does not matter).</p>
+<div class="field"><label>Total items (n)</label><input type="number" id="nVal" min="0" max="170" value="5"></div><div class="field"><label>Items selected (r)</label><input type="number" id="rVal" min="0" max="170" value="3"></div>
+<button class="btn" id="calcNR">Calculate nPr and nCr</button>
+<div class="result"><div class="statgrid"><div class="mini"><small>PERMUTATION · nPr</small><b id="permVal">60</b><div class="muted">Order matters</div></div><div class="mini"><small>COMBINATION · nCr</small><b id="combVal">10</b><div class="muted">Order does not matter</div></div></div><div class="formula" id="nrFormula">5P3 = 5! / (5−3)! = 60<br>5C3 = 5! / (3! × 2!) = 10</div></div></div>
+<div class="card"><h3>Computing connection</h3><div class="mini"><b>Permutation</b><small>Arrange 3 different tasks in 5 available execution slots where order changes the schedule.</small></div><div class="mini" style="margin-top:10px"><b>Combination</b><small>Select 3 students from a group of 5 for a project team where selection order does not matter.</small></div><div class="note">The key question is: does changing the order create a different outcome? If yes, use permutations. If no, use combinations.</div></div>
+</div></section>
+<section id="challenge" class="section">
+<div class="layout"><div class="card"><h3>Combinatorics security challenge</h3><p class="sub">Test whether you can apply the mathematics behind the interface.</p><div class="pill" id="qCount">QUESTION 1 / 4</div><h3 id="question" style="margin-top:18px">How many 4-digit PINs are possible if repetition is allowed?</h3><div id="options"></div><div class="feedback" id="feedback"></div><div class="btnrow"><button class="btn secondary" id="nextQ">Next question</button></div></div><div class="card"><h3>Learning outcomes</h3><ul class="muted" style="padding-left:19px;line-height:2"><li>Apply the multiplication principle.</li><li>Distinguish permutations from combinations.</li><li>Calculate search-space size and entropy.</li><li>Connect mathematical models to cybersecurity.</li></ul><div class="result"><div class="muted">YOUR SCORE</div><div class="big" id="score">0 / 4</div></div></div></div>
+</section>
+<div class="footer">CIPHERLAB · FOUNDATION OF MATHEMATICS · COMBINATORICS<br>Educational simulation only · No password is transmitted or stored</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const fmt=n=>{if(!Number.isFinite(n))return "Extremely large";if(n<1e12)return Math.round(n).toLocaleString("en-IN");return n.toExponential(3).replace("e+"," × 10^")};
+const sci=n=>{if(!Number.isFinite(n))return "Extremely large";if(n<1e6)return Math.round(n).toLocaleString("en-IN");return n.toExponential(3).replace("e+"," × 10^")};
+const log2=x=>Math.log(x)/Math.LN2;
+function bigPowerLog(base,power){return power*Math.log10(base)}
+function showTabs(){document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===b.dataset.tab));}));}
+function pinCalc(){let len=+$("pinLen").value,repeat=$("pinRepeat").checked,zero=$("pinZero").checked;let total;if(repeat)total=zero?10**len:9*10**(len-1);else total=zero?factorial(10)/factorial(10-len):9*factorial(9)/factorial(10-len);if(len>10&&!repeat){total=0;}$("pinLenLabel").textContent=len+" digits";$("pinTotal").textContent=fmt(total);$("pinFormula").textContent=repeat?(zero?`10^${len} = ${fmt(total)}`:`9 × 10^${len-1} = ${fmt(total)}`):(zero?`10P${len} = ${fmt(total)}`:`9 × 9P${len-1} = ${fmt(total)}`);$("pinBits").textContent=(total>0?log2(total):0).toFixed(2)+" bits";$("pinChance").textContent=total>0?(100/total).toExponential(2)+"%":"Not possible";$("heroCount").textContent=fmt(total);$("pinBars").innerHTML=[4,6,8,10].map(n=>{let v=10**n;let w=n*10;return `<div class="barrow"><b>${n}-digit</b><div class="bar"><i style="width:${w}%"></i></div><span>${fmt(v)}</span></div>`}).join("");}
+function factorial(n){if(n<0||n>170)return Infinity;let x=1;for(let i=2;i<=n;i++)x*=i;return x}
+function pool(){return ($("lower").checked?26:0)+($("upper").checked?26:0)+($("digits").checked?10:0)+($("symbols").checked?32:0)}
+function passwordCalc(){let len=+$("pwLen").value,p=pool();$("pwLenLabel").textContent=len+" characters";$("poolSize").textContent=p;if(!p){$("pwFormula").textContent="Select at least one character group";$("pwCount").textContent="0";$("pwBits").textContent="0 bits";return}let bits=len*log2(p),lg=len*Math.log10(p),count=lg<15?fmt(10**lg):"10^"+lg.toFixed(2);$("pwFormula").textContent=`${p}^${len} possible strings`;$("pwCount").textContent=count;$("pwBits").textContent=bits.toFixed(2)+" bits";$("pwScale").textContent=count;$("pwMeter").style.width=Math.min(100,bits/100*100)+"%";}
+function randomIndex(max){if(window.crypto&&crypto.getRandomValues){let a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%max;}return Math.floor(Math.random()*max)}
+function generate(){let chars="";if($("lower").checked)chars+="abcdefghijklmnopqrstuvwxyz";if($("upper").checked)chars+="ABCDEFGHIJKLMNOPQRSTUVWXYZ";if($("digits").checked)chars+="0123456789";if($("symbols").checked)chars+="!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";if(!chars){$("generated").value="Select a character group first";return}let out="";for(let i=0;i<+$("pwLen").value;i++)out+=chars[randomIndex(chars.length)];$("generated").value=out}
+function entropyCalc(){let p=Math.max(2,+$("poolCustom").value||2),l=Math.max(1,+$("lenCustom").value||1),rate=+$("rate").value,bits=l*log2(p),logSpace=l*Math.log10(p),seconds=Math.pow(10,Math.min(300,logSpace- Math.log10(rate)))/2;$("entropyBits").textContent=bits.toFixed(2)+" bits";$("entropyMeter").style.width=Math.min(100,bits/100*100)+"%";$("entropySpace").textContent=logSpace<15?fmt(Math.pow(10,logSpace)):"10^"+logSpace.toFixed(2);let years=seconds/(365.25*24*3600);$("guessTime").textContent=years>1e9?"Over 1 billion years":years>1?years.toExponential(2)+" years":seconds>86400?(seconds/86400).toFixed(1)+" days":seconds>3600?(seconds/3600).toFixed(1)+" hours":seconds>60?(seconds/60).toFixed(1)+" minutes":seconds.toFixed(1)+" seconds";}
+function nrCalc(){let n=+$("nVal").value,r=+$("rVal").value;if(n<0||r<0||r>n||n>170){$("permVal").textContent=$("combVal").textContent="Invalid n and r";return}let p=factorial(n)/factorial(n-r),c=p/factorial(r);$("permVal").textContent=fmt(p);$("combVal").textContent=fmt(c);$("nrFormula").innerHTML=`${n}P${r} = ${n}! / (${n}−${r})! = ${fmt(p)}<br>${n}C${r} = ${n}! / (${r}! × (${n}−${r})!) = ${fmt(c)}`;}
+const questions=[{q:"How many 4-digit PINs are possible if repetition is allowed and leading zero is allowed?",o:["40","1,000","10,000","5,040"],a:2,e:"Each of the 4 positions has 10 choices: 10 × 10 × 10 × 10 = 10,000."},{q:"Which concept counts arrangements where order matters?",o:["Combination","Permutation","Boolean algebra","Interpolation"],a:1,e:"Permutations count arrangements. Changing the order creates a different outcome."},{q:"How many ways can you select 2 students from 5?",o:["10","20","25","5"],a:0,e:"5C2 = 5! / (2! × 3!) = 10. Selection order does not matter."},{q:"A character pool has 26 characters. How many 3-character strings are possible with repetition?",o:["78","17,576","2,600","15,600"],a:1,e:"By the multiplication principle: 26³ = 17,576."}];let qi=0,score=0,answered=false;
+function renderQ(){let q=questions[qi];$("qCount").textContent=`QUESTION ${qi+1} / ${questions.length}`;$("question").textContent=q.q;$("feedback").textContent="";answered=false;$("options").innerHTML=q.o.map((v,i)=>`<button class="quizopt" data-i="${i}">${String.fromCharCode(65+i)}. ${v}</button>`).join("");document.querySelectorAll(".quizopt").forEach(b=>b.addEventListener("click",()=>{if(answered)return;answered=true;let ok=+b.dataset.i===q.a;if(ok)score++;$("score").textContent=`${score} / ${questions.length}`;$("feedback").innerHTML=(ok?'<span class="good">Correct!</span> ':'<span class="bad">Not quite.</span> ')+q.e;}));}
+$("pinLen").addEventListener("input",pinCalc);["pinRepeat","pinZero"].forEach(id=>$(id).addEventListener("change",pinCalc));$("calcPin").onclick=pinCalc;
+$("pwLen").addEventListener("input",passwordCalc);["lower","upper","digits","symbols"].forEach(id=>$(id).addEventListener("change",passwordCalc));$("calcPw").onclick=passwordCalc;$("generatePw").onclick=generate;
+$("calcEntropy").onclick=entropyCalc;$("calcNR").onclick=nrCalc;$("nextQ").onclick=()=>{qi=(qi+1)%questions.length;renderQ();if(qi===0){score=0;$("score").textContent="0 / 4"}};
+showTabs();pinCalc();passwordCalc();entropyCalc();nrCalc();renderQ();
+</script>
+</body></html>

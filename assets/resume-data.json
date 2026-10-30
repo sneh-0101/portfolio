@@ -1,0 +1,59 @@
+{
+  "name": "Sneh",
+  "email": "popatsneh7@gmail.com",
+  "phone": "+91 XXXXXXXXXX",
+  "location": "India",
+  "role": "Full Stack Developer",
+  "summary": "Full Stack Developer & BCA Student with expertise in web development and data analysis",
+  "skills": [
+    "Python",
+    "PHP",
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "MySQL",
+    "Data Analysis",
+    "Git",
+    "XAMPP",
+    "Linux"
+  ],
+  "experience": [
+    {
+      "title": "Internship",
+      "company": "Vaidsys Technologies",
+      "location": "Remote",
+      "duration": "3 months",
+      "description": "Worked on full-stack development projects and code optimization"
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor's degree",
+      "school": "Atmiya University",
+      "year": "Expected 2026",
+      "details": "I am pursuing a Bachelor's degree at Atmiya University."
+    }
+  ],
+  "projects": [
+    {
+      "name": "AI Resume Analyzer & Job Matcher",
+      "description": "Intelligent system analyzing resumes and matching with job opportunities",
+      "technologies": ["Python", "NLP", "Machine Learning"]
+    },
+    {
+      "name": "Full Stack PHP Web Application",
+      "description": "Complete admin panel with CRUD operations and authentication",
+      "technologies": ["PHP", "MySQL", "JavaScript"]
+    },
+    {
+      "name": "TheDigitalDreamCode",
+      "description": "TheDigitalDreamCode is a web-based application developed using HTML, CSS, JavaScript, PHP, and MySQL. It focuses on responsive design, backend functionality, and efficient database operations, demonstrating practical web development skills.",
+      "technologies": ["HTML", "CSS", "JavaScript", "PHP", "MySQL"]
+    },
+    {
+      "name": "Text-Based Adventure Game",
+      "description": "Interactive game with multiple storylines in Python",
+      "technologies": ["Python", "OOP"]
+    }
+  ]
+}
